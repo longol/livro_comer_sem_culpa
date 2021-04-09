@@ -49,7 +49,7 @@ class RecipeViewState extends State<RecipeView> {
 
     this.widget.recipe.stages.forEach((stage) {
       if (this.widget.recipe.stages.length > 1) {
-        widgets.add(_headerRow(stage.name));
+        widgets.add(_stageHeaderRow(stage.name));
       }
       widgets.add(_headerRow("Ingredients"));
       stage.ingredients.forEach((ingredient) {
@@ -74,25 +74,6 @@ class RecipeViewState extends State<RecipeView> {
         height: 100,
       ),
     );
-    // widgets.add(_generalInfoRow("Preparo", this.widget.recipe.preparo));
-    // widgets.add(_generalInfoRow("Porção", this.widget.recipe.porcao));
-    // widgets.add(_generalInfoRow("Material", this.widget.recipe.material));
-    // widgets.add(_generalInfoRow("Validade", this.widget.recipe.validade));
-
-    // if (this.widget.recipe.ingredients.length > 0) {
-    //   widgets.add(_headerRow("INGREDIENTES"));
-    //   widgets.addAll(_bulletList(this.widget.recipe.ingredientes));
-
-    //   widgets.add(_headerRow("MODO DE PREPARO"));
-    //   widgets.addAll(_bulletList(this.widget.recipe.modoPreparo));
-    // } else if (this.widget.recipe.etapas.length > 0) {
-    //   widgets.addAll(_etapasReceita());
-    // }
-    // widgets.add(
-    //   SizedBox(
-    //     height: 100,
-    //   ),
-    // );
 
     return SingleChildScrollView(
       child: Padding(
@@ -107,29 +88,33 @@ class RecipeViewState extends State<RecipeView> {
   Widget _imageRow() {
     var imageUrl = "fotosRecipe/large/${this.widget.recipe.id}.png";
 
-    return FutureBuilder(
-      future: getImage(context, imageUrl, 200),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done)
-          return Center(
-            heightFactor: 1,
-            child: snapshot.data,
-          );
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width / 1.5,
+      child: FutureBuilder(
+        future: getImage(context, imageUrl, 200),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done)
+            return Center(
+              heightFactor: 1,
+              child: snapshot.data,
+            );
 
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.connectionState == ConnectionState.active)
-          return Column(
-            children: [
-              CircularProgressIndicator(),
-              Text("Loading"),
-            ],
-          );
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.connectionState == ConnectionState.active)
+            return Column(
+              children: [
+                CircularProgressIndicator(),
+                Text("Loading"),
+              ],
+            );
 
-        if (snapshot.hasError) {
-          return Text("Sorry an error occured");
-        }
-        return Center();
-      },
+          if (snapshot.hasError) {
+            return Text("Sorry an error occured");
+          }
+          return Center();
+        },
+      ),
     );
   }
 
@@ -190,12 +175,10 @@ class RecipeViewState extends State<RecipeView> {
               ),
             ),
           ),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 18,
-              ),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 18,
             ),
           ),
         ],
@@ -203,8 +186,7 @@ class RecipeViewState extends State<RecipeView> {
     );
   }
 
-  // ignore: unused_element
-  Container _headerRow(String text) {
+  Widget _headerRow(String text) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -220,17 +202,7 @@ class RecipeViewState extends State<RecipeView> {
     );
   }
 
-  // ignore: unused_element
-  List<Widget> _bulletList(List<dynamic> list) {
-    List<Widget> widgets = [];
-
-    for (String line in list) {
-      widgets.add(_bulletRow(line));
-    }
-    return widgets;
-  }
-
-  Container _bulletRow(String text) {
+  Widget _bulletRow(String text) {
     final _width = MediaQuery.of(context).size.width * 0.95;
 
     return Container(
@@ -245,25 +217,8 @@ class RecipeViewState extends State<RecipeView> {
     );
   }
 
-  // List<Widget> _etapasReceita() {
-  //   List<Widget> widgets = [];
-
-  //   int i = 1;
-  //   for (Etapa etapa in this.widget.recipe.etapas) {
-  //     widgets.add(_etapaNameRow("Etapa $i: ${etapa.nome}"));
-  //     i++;
-
-  //     widgets.add(_headerRow("INGREDIENTES"));
-  //     widgets.addAll(_bulletList(etapa.ingredientes));
-
-  //     widgets.add(_headerRow("MODO DE PREPARO"));
-  //     widgets.addAll(_bulletList(etapa.modoPreparo));
-  //   }
-  //   return widgets;
-  // }
-
   // ignore: unused_element
-  Container _etapaNameRow(String text) {
+  Widget _stageHeaderRow(String text) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

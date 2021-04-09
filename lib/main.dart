@@ -149,7 +149,6 @@ class _ComerSemCulpaAppState extends State<ComerSemCulpaApp> {
     Map recipesRaw = data.value['Recipes'];
     recipesRaw.entries.forEach((element) {
       Recipe recipe = Recipe.fromJSON(element.value);
-      print("RECIPE:" + recipe.title);
 
       List utensilsRecipeRaw = data.value['UtensilsRecipe'];
 
@@ -157,7 +156,6 @@ class _ComerSemCulpaAppState extends State<ComerSemCulpaApp> {
         if (element != null && element['recipeId'] == recipe.id) {
           Utensil utensil = Utensil.fromJSON(element);
           recipe.utensils.add(utensil);
-          print(" UTENSIL: ${utensil.name}");
         }
       });
 
@@ -166,14 +164,12 @@ class _ComerSemCulpaAppState extends State<ComerSemCulpaApp> {
       stagesRecipeRaw.forEach((element) {
         if (element != null && element['recipeId'] == recipe.id) {
           Stage stage = Stage.fromJSON(element);
-          print(" STAGE: ${stage.name}");
 
           List ingredientsStageRaw = data.value['IngredientsStage'];
           ingredientsStageRaw.forEach((element) {
             if (element != null && element['recipeId'] == recipe.id) {
               Ingredient ingredient = Ingredient.fromJSON(element);
               stage.ingredients.add(ingredient);
-              print("  INGREDIENT: ${ingredient.name}");
             }
           });
 
@@ -182,7 +178,6 @@ class _ComerSemCulpaAppState extends State<ComerSemCulpaApp> {
             if (element != null && element['recipeId'] == recipe.id) {
               StepStage stepStage = StepStage.fromJSON(element);
               stage.steps.add(stepStage);
-              print("  STEP: ${stepStage.description}");
             }
           });
 
@@ -196,7 +191,6 @@ class _ComerSemCulpaAppState extends State<ComerSemCulpaApp> {
         if (element != null && element['recipeId'] == recipe.id) {
           Tip tip = Tip.fromJSON(element);
           recipe.tips.add(tip);
-          print(" TIP: ${tip.description}");
         }
       });
 
