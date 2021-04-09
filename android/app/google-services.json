@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "549560529818",
+    "firebase_url": "https://comer-sem-culpa-b3939-default-rtdb.firebaseio.com",
+    "project_id": "comer-sem-culpa-b3939",
+    "storage_bucket": "comer-sem-culpa-b3939.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549560529818:android:8b34341c38b5e5c55e4023",
+        "android_client_info": {
+          "package_name": "com.adrianacarioba.livro_comer_sem_culpa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549560529818-e6fkbi476t8iu5eeqmm0v2t2bsghmsr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPo1EUx11yEWjDulkt8dvJgCFsWUBicxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549560529818-e6fkbi476t8iu5eeqmm0v2t2bsghmsr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
