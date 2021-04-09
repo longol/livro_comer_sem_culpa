@@ -29,6 +29,51 @@ class RecipeViewState extends State<RecipeView> {
     List<Widget> widgets = [];
 
     widgets.add(_imageRow());
+    widgets
+        .add(_headerRow("Protein | Energy: ${this.widget.recipe.peRatio()}"));
+    widgets.add(_nutritionalInfoTable());
+    widgets.add(
+        _generalInfoRow("Prep Time", "${this.widget.recipe.prepTime} minutes"));
+    if (this.widget.recipe.cookTime != 0) {
+      widgets.add(_generalInfoRow(
+          "Cooking Time", "${this.widget.recipe.cookTime} minutes"));
+    }
+    if (this.widget.recipe.coolingTime != 0) {
+      widgets.add(_generalInfoRow(
+          "Cooling Time", "${this.widget.recipe.coolingTime} minutes"));
+    }
+    widgets.add(_headerRow("Utensils"));
+    this.widget.recipe.utensils.forEach((utensil) {
+      widgets.add(_bulletRow(utensil.name));
+    });
+
+    this.widget.recipe.stages.forEach((stage) {
+      if (this.widget.recipe.stages.length > 1) {
+        widgets.add(_headerRow(stage.name));
+      }
+      widgets.add(_headerRow("Ingredients"));
+      stage.ingredients.forEach((ingredient) {
+        widgets.add(_bulletRow(ingredient.name));
+      });
+
+      widgets.add(_headerRow("Steps"));
+      stage.steps.forEach((step) {
+        widgets.add(_bulletRow(step.description));
+      });
+    });
+
+    if (this.widget.recipe.tips.length > 0) {
+      widgets.add(_headerRow("Tips"));
+      this.widget.recipe.tips.forEach((tip) {
+        widgets.add(_bulletRow(tip.description));
+      });
+    }
+
+    widgets.add(
+      SizedBox(
+        height: 100,
+      ),
+    );
     // widgets.add(_generalInfoRow("Preparo", this.widget.recipe.preparo));
     // widgets.add(_generalInfoRow("Porção", this.widget.recipe.porcao));
     // widgets.add(_generalInfoRow("Material", this.widget.recipe.material));
@@ -59,42 +104,75 @@ class RecipeViewState extends State<RecipeView> {
     );
   }
 
-  Container _imageRow() {
+  Widget _imageRow() {
     var imageUrl = "fotosRecipe/large/${this.widget.recipe.id}.png";
 
-    return Container(
-        child: FutureBuilder(
+    return FutureBuilder(
       future: getImage(context, imageUrl, 200),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done)
-          return Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.width * 0.4,
-                child: snapshot.data,
-              )
-            ],
+          return Center(
+            heightFactor: 1,
+            child: snapshot.data,
           );
 
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            snapshot.connectionState == ConnectionState.active)
           return Column(
-            children: [CircularProgressIndicator()],
+            children: [
+              CircularProgressIndicator(),
+              Text("Loading"),
+            ],
           );
 
         if (snapshot.hasError) {
-          return Column(
-            children: [
-              Text("Sorry an error occured"),
-            ],
-          );
+          return Text("Sorry an error occured");
         }
-        return Column();
+        return Center();
       },
-    ));
+    );
   }
 
-  // ignore: unused_element
-  Container _generalInfoRow(String title, String text) {
+  Widget _nutritionalInfoTable() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(10),
+            child: Table(
+              border: TableBorder.all(),
+              children: [
+                TableRow(children: [
+                  Text("Recipe"),
+                  Text(
+                      "${this.widget.recipe.recipeQuantity} ${this.widget.recipe.recipeQuantityMeasure}s"),
+                ]),
+                TableRow(children: [
+                  Text("Calories"),
+                  Text("${this.widget.recipe.calories}"),
+                ]),
+                TableRow(children: [
+                  Text("Carbohydrates"),
+                  Text("${this.widget.recipe.carbohydrates} grams"),
+                ]),
+                TableRow(children: [
+                  Text("Proteins"),
+                  Text("${this.widget.recipe.proteins} grams"),
+                ]),
+                TableRow(children: [
+                  Text("Fats"),
+                  Text("${this.widget.recipe.fats} grams"),
+                ]),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _generalInfoRow(String title, String text) {
     final double _width = MediaQuery.of(context).size.width * 0.95;
 
     return Container(

@@ -49,6 +49,11 @@ class Recipe {
       element['description'] == null ? "" : element['description'],
     );
   }
+
+  String peRatio() {
+    return (proteins / (carbohydrates + fats)).toStringAsPrecision(3) +
+        " minutes";
+  }
 }
 
 class Utensil {
